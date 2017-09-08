@@ -1,19 +1,31 @@
-.PHONY: all npm-install test start localurl versions
-.PHONY: circle.dependencies circle.test
-.PHONY: .FORCE
+.PHONY: all vendor npm-install install build test start localurl versions
 
-all: start
+all: install test
 
-npm-install: .FORCE
-	./bin/crun-node npm install --unsafe-perm --loglevel warn --no-bin-links
+clean:
+	git clean -xfd
 
-install: npm-install
+npm-install:
+	./bin/npm install --loglevel warn --no-progress
 
-test: npm-install
-	bin/crun-node npm test
+vendor:
+	./bin/npm run bower-install
+	./tasks/privateDependencies.sh
 
-start: npm-install
-	DOCKER_OPTS="-p 8080:8080" bin/crun-node npm start
+install: npm-install vendor
+
+build:
+	./bin/npm run build
+
+test:
+	./bin/npm run lint
+	./bin/npm test
+
+test-e2e:
+	./bin/npm run e2e
+
+start:
+	DOCKER_OPTS="-p 8080:8080 -p 3000:3000 -p 3001:3001" ./bin/npm run start-prod
 
 localurl:
 	@echo "http://$$(./bin/docker-ip):8080"
@@ -23,6 +35,4 @@ versions:
 	bash --version
 	docker version
 	docker info
-
-circle.dependencies: versions npm-install
-circle.test: test
+	./bin/npm version

@@ -1,8 +1,11 @@
+#!/usr/bin/env sh
+set -eu
+
 # This file implements the syntax highlighting of codemirror.
 # The reason I'm not doing this in grunt, is that we already have a sieve.js file in /vendor/ (it implements the simple sieve parsing). So I need to give this a new name to get this working.
 cp vendor/codemirror/mode/sieve/sieve.js vendor/codemirror/mode/sieve/sieveSyntax.js
 # Cannot inject a file from node_modules with the current grunt setup ლ(ಠ益ಠლ
-cp -r node_modules/babel-polyfill  vendor/babel-polyfill
+cp -r node_modules/babel-polyfill vendor/babel-polyfill
 
 DEST_BLOB='vendor/blobjs'
 DEST_QRCODE='vendor/qrcodejs'
@@ -17,19 +20,19 @@ rm -rf $DEST_MAILPARSER
 mkdir $DEST_MAILPARSER
 cp src/libraries/mailparser.js vendor/mailparser/mailparser.js
 
-git clone git@github.com:eligrey/Blob.js.git \
+git clone https://github.com/eligrey/Blob.js.git \
   --branch master \
   --single-branch $DEST_BLOB \
   --depth 1
 
 # There is a bower.json but it's not available
-git clone git@github.com:mckamey/cssuseragent.git \
+git clone https://github.com/mckamey/cssuseragent.git \
   --branch master \
   --single-branch $DEST_CSSUA \
   --depth 1
 
 # Dafuq bower asks for a password
-git clone git@github.com:davidshimjs/qrcodejs.git \
+git clone https://github.com/davidshimjs/qrcodejs.git \
   --branch master \
   --single-branch $DEST_QRCODE \
   --depth 1

@@ -1,11 +1,14 @@
 {
   "repository": {
     "type": "git",
-    "url": "https://github.com/ProtonMail/Angular.git"
+    "url": "https://github.com/ProtonMail/WebClient.git"
   },
   "name": "protonmail-web",
   "author": "Proton Technologies AG",
   "description": "Angular frontend for protonmail.com",
+  "engines": {
+    "node": "~8.2.1"
+  },
   "devDependencies": {
     "angular-mocks": "^1.6.2",
     "autoprefixer": "^6.7.5",
@@ -66,13 +69,16 @@
   },
   "license": "MIT",
   "scripts": {
-    "postinstall": "bower install && ./tasks/privateDependencies.sh",
+    ".postinstall": "bower install --allow-root && ./tasks/privateDependencies.sh",
+    "bower-install": "bower install --allow-root",
     "start": "grunt watch --api=dev",
-    "lint": "eslint $(find src/app -type f -name '*.js')  --quiet",
+    "start-prod": "grunt watch --api=prod",
+    "lint": "eslint $(find src/app -type f -name '*.js') --quiet",
     "e2e": "protractor protractor_conf.js",
     "test": "cross-env NODE_ENV=test karma start test/karma.conf.js",
     "testwatch": "npm test -- --auto-watch --no-single-run",
     "i18n": "./tasks/commitI18n.sh",
+    "build": "grunt ngconstant:dev build",
     "build:i18n": "grunt nggettext_extract nggettext_compile",
     "postbuild:i18n": "npm run i18n"
   },

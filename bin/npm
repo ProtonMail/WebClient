@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+set -eu
+
+if [ "${1-}" != 'bash' -a "${1-}" != 'node' ]; then CMD="npm $@"; else CMD="$@"; fi
+./bin/crun-node $CMD
